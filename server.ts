@@ -10,12 +10,14 @@ async function startServer() {
 
   // Dummy API endpoints
   app.post("/api/login", (req, res) => {
-    console.log("Login data received:", req.body);
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    console.log(`[IP: ${ip}] Login data received:`, req.body);
     res.json({ success: true, message: "Login successful (dummy)" });
   });
 
   app.post("/api/signup", (req, res) => {
-    console.log("Signup data received:", req.body);
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    console.log(`[IP: ${ip}] Signup data received:`, req.body);
     res.json({ success: true, message: "Signup successful (dummy)" });
   });
 
