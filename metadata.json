@@ -1,0 +1,5 @@
+{
+  "name": "Instagram Clone",
+  "description": "A dark mode Instagram login and signup clone built with React, Tailwind CSS, and Express.",
+  "requestFramePermissions": []
+}

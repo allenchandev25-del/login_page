@@ -1,0 +1,42 @@
+import express from "express";
+import { createServer as createViteServer } from "vite";
+import path from "path";
+
+async function startServer() {
+  const app = express();
+  const PORT = 3000;
+
+  app.use(express.json());
+
+  // Dummy API endpoints
+  app.post("/api/login", (req, res) => {
+    console.log("Login data received:", req.body);
+    res.json({ success: true, message: "Login successful (dummy)" });
+  });
+
+  app.post("/api/signup", (req, res) => {
+    console.log("Signup data received:", req.body);
+    res.json({ success: true, message: "Signup successful (dummy)" });
+  });
+
+  // Vite middleware for development
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  } else {
+    // Serve static files in production
+    app.use(express.static(path.join(process.cwd(), "dist")));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(process.cwd(), "dist", "index.html"));
+    });
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+startServer();
